@@ -7,9 +7,9 @@
 //
 
 import UIKit
+import Firebase
 
 class SignupViewController: UIViewController {
-    var usernameTextField: UITextField!
     var passwordTextField: UITextField!
     var nameTextField: UITextField!
     var emailTextField: UITextField!
@@ -31,7 +31,7 @@ class SignupViewController: UIViewController {
     
     // Setup Functions
     func setupTitle() {
-        screenTitle = UILabel(frame: CGRect(x: 202, y: 30, width: 151, height: 55))
+        screenTitle = UILabel(frame: rRect(rx: 202, ry: 30, rw: 151, rh: 55))
         screenTitle.text = "Signup"
         screenTitle.font = UIFont.systemFont(ofSize: 36, weight: UIFont.Weight(rawValue: 3))
         screenTitle.adjustsFontSizeToFitWidth = true
@@ -40,7 +40,7 @@ class SignupViewController: UIViewController {
     }
     
     func setupTextFields() {
-        nameTextField = UITextField(frame: CGRect(x: 27, y: 132, width: 210, height: 34))
+        nameTextField = UITextField(frame: rRect(rx: 27, ry: 132, rw: 210, rh: 34))
         nameTextField.layer.backgroundColor = UIColor.lightGray.cgColor
         nameTextField.placeholder = "Name"
         nameTextField.adjustsFontSizeToFitWidth = true
@@ -52,19 +52,7 @@ class SignupViewController: UIViewController {
         nameTextField.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
         view.addSubview(nameTextField)
         
-        usernameTextField = UITextField(frame: CGRect(x: 27, y: 204, width: 210, height: 34))
-        usernameTextField.layer.backgroundColor = UIColor.lightGray.cgColor
-        usernameTextField.placeholder = "Username"
-        usernameTextField.adjustsFontSizeToFitWidth = true
-        usernameTextField.layoutIfNeeded()
-        usernameTextField.layer.cornerRadius = 2
-        usernameTextField.textColor = UIColor.black
-        usernameTextField.autocorrectionType = .no
-        usernameTextField.spellCheckingType = .no
-        usernameTextField.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
-        view.addSubview(usernameTextField)
-        
-        passwordTextField = UITextField(frame: CGRect(x: 27, y: 276, width: 210, height: 34))
+        passwordTextField = UITextField(frame: rRect(rx: 27, ry: 276, rw: 210, rh: 34))
         passwordTextField.layer.backgroundColor = UIColor.lightGray.cgColor
         passwordTextField.placeholder = "Password"
         passwordTextField.adjustsFontSizeToFitWidth = true
@@ -77,7 +65,7 @@ class SignupViewController: UIViewController {
         passwordTextField.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
         view.addSubview(passwordTextField)
         
-        emailTextField = UITextField(frame: CGRect(x: 27, y: 348, width: 210, height: 34))
+        emailTextField = UITextField(frame: rRect(rx: 27, ry: 348, rw: 210, rh: 34))
         emailTextField.layer.backgroundColor = UIColor.lightGray.cgColor
         emailTextField.placeholder = "Email"
         emailTextField.adjustsFontSizeToFitWidth = true
@@ -86,20 +74,49 @@ class SignupViewController: UIViewController {
         emailTextField.textColor = UIColor.black
         emailTextField.autocorrectionType = .no
         emailTextField.spellCheckingType = .no
+        emailTextField.autocapitalizationType = .none
         emailTextField.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
         view.addSubview(emailTextField)
     }
     
     func setupButtons() {
-        backButton = UIButton(frame: CGRect(x: 27, y: 38, width: 40, height: 40))
+        backButton = UIButton(frame: rRect(rx: 27, ry: 38, rw: 40, rh: 40))
         backButton.setImage(UIImage(named: "backButton"), for: .normal)
         backButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
         view.addSubview(backButton)
+        
+        signupButton = UIButton(frame: rRect(rx: 17, ry: 507, rw: 336, rh: 54))
+        signupButton.setTitle("Register", for: .normal)
+        signupButton.addTarget(self, action: #selector(signupButtonClicked), for: .touchUpInside)
+        signupButton.backgroundColor = UIColor.lightGray
+        view.addSubview(signupButton)
     }
     
     // Selectors
     @objc
     func goBack() {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc
+    func signupButtonClicked() {
+        guard let email = emailTextField.text,
+            let password = passwordTextField.text,
+            let name = nameTextField.text else {
+                warning(message: "Not all fields are valid!")
+                return
+        }
+        // consider making a class to handle this
+        
+        Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
+            if error == nil {
+                let ref = Database.database().reference().child("Users").child((Auth.auth().currentUser?.uid)!)
+                // still not storing image
+                ref.setValue(["name": name, "email": email, "imageUrl": ""])
+                self.goBack()
+            } else {
+                self.warning(message: error.debugDescription)
+            }
+        })
     }
 }

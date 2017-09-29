@@ -12,13 +12,17 @@ import Firebase
 class LoginViewController: UIViewController {
     // thanks vidya for the great variable names
     var appTitle: UILabel!
-    var usernameTextField: UITextField!
+    var emailTextField: UITextField!
     var passwordTextField: UITextField!
     var loginButton: UIButton!
     var signupButton: UIButton!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // creating temp post
+        let ref = Database.database().reference().child("Posts").child(("test post0"))
+        ref.setValue(["name": "roo party", "imageUrl": "", "description": "time to moo!", "date": "4/21/17", "interestedNumber": 0, "poster": "abc"])
         
         // replace this with a picture
         view.backgroundColor = UIColor(hue: 0.5361, saturation: 0.84, brightness: 0.87, alpha: 1.0)
@@ -26,16 +30,25 @@ class LoginViewController: UIViewController {
         setupTitle()
         setupTextFields()
         setupButtons()
+        
+        if Auth.auth().currentUser != nil {
+            userLoggedIn()
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
     
+    // Transition Functions
+    func userLoggedIn() {
+        performSegue(withIdentifier: "loginToFeed", sender: self)
+    }
+    
     // View Setup Functions
     func setupTitle() {
-        appTitle = UILabel(frame: CGRect(x: 54, y: 186,
-                                         width: 268, height: 55))
+        appTitle = UILabel(frame: rRect(rx: 54, ry: 186,
+                                         rw: 268, rh: 55))
         appTitle.text = "MDB Socials"
         appTitle.font = UIFont.systemFont(ofSize: 36, weight: UIFont.Weight(rawValue: 3))
         appTitle.adjustsFontSizeToFitWidth = true
@@ -45,23 +58,24 @@ class LoginViewController: UIViewController {
     
     func setupTextFields() {
         // Username
-        usernameTextField = UITextField(frame: CGRect(x: 20, y: 251, width: 336, height: 56))
-        usernameTextField.placeholder = "Username"
-        usernameTextField.adjustsFontSizeToFitWidth = true
-        usernameTextField.layoutIfNeeded()
-//        usernameTextField.layer.borderColor = UIColor.lightGray.cgColor
-//        usernameTextField.layer.borderWidth = 1.0
-        usernameTextField.layer.cornerRadius = 12
-        usernameTextField.textColor = UIColor.black
-        usernameTextField.autocorrectionType = .no
-        usernameTextField.autocapitalizationType = .none
-        usernameTextField.spellCheckingType = .no
-        usernameTextField.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
-        usernameTextField.backgroundColor = UIColor.white
-        view.addSubview(usernameTextField)
+        emailTextField = UITextField(frame: rRect(rx: 20, ry: 251, rw: 336, rh: 56))
+        emailTextField.placeholder = "Email"
+        emailTextField.adjustsFontSizeToFitWidth = true
+        emailTextField.layoutIfNeeded()
+//        emailTextField.layer.borderColor = UIColor.lightGray.cgColor
+//        emailTextField.layer.borderWidth = 1.0
+        emailTextField.layer.cornerRadius = 12
+        emailTextField.textColor = UIColor.black
+        emailTextField.autocorrectionType = .no
+        emailTextField.autocapitalizationType = .none
+        emailTextField.spellCheckingType = .no
+        emailTextField.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
+        emailTextField.backgroundColor = UIColor.white
+        emailTextField.keyboardType = UIKeyboardType.emailAddress
+        view.addSubview(emailTextField)
         
         // Password
-        passwordTextField = UITextField(frame: CGRect(x: 20, y: 307, width: 336, height: 56))
+        passwordTextField = UITextField(frame: rRect(rx: 20, ry: 307, rw: 336, rh: 56))
         passwordTextField.placeholder = "Password"
         passwordTextField.adjustsFontSizeToFitWidth = true
         passwordTextField.layoutIfNeeded()
@@ -79,7 +93,7 @@ class LoginViewController: UIViewController {
     }
     
     func setupButtons() {
-        loginButton = UIButton(frame: CGRect(x: 19, y: 381, width: 336, height: 54))
+        loginButton = UIButton(frame: rRect(rx: 19, ry: 381, rw: 336, rh: 54))
         loginButton.layoutIfNeeded()
         loginButton.setTitle("Login", for: .normal)
         loginButton.layer.borderWidth = 2.0
@@ -91,7 +105,7 @@ class LoginViewController: UIViewController {
         loginButton.backgroundColor = UIColor(hue: 0.5556, saturation: 0.85, brightness: 1, alpha: 1.0) /* #24b3ff */
         view.addSubview(loginButton)
         
-        signupButton = UIButton(frame: CGRect(x: 20, y: 512, width: 336, height: 54))
+        signupButton = UIButton(frame: rRect(rx: 20, ry: 512, rw: 336, rh: 54))
         signupButton.layoutIfNeeded()
         signupButton.setTitle("Sign up with email", for: .normal)
         signupButton.layer.borderWidth = 2.0
@@ -106,7 +120,19 @@ class LoginViewController: UIViewController {
     // Selectors
     @objc
     func loginButtonClicked() {
-        print("Login!")
+        guard let email = emailTextField.text,
+            let password = passwordTextField.text else {
+                warning(message: "Invalid input!")
+                return
+        }
+        
+        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+            if error == nil {
+                self.userLoggedIn()
+            } else {
+                self.warning(message: error.debugDescription)
+            }
+        }
     }
     
     @objc

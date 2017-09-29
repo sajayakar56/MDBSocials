@@ -1,3 +1,4 @@
+# coding: utf-8
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
 
@@ -8,6 +9,8 @@ target 'MDBSocials' do
   # Pods for MDBSocials
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
+  pod 'Firebase/Storage'
+  pod 'HanekeSwift', :git => ‘https://github.com/Haneke/HanekeSwift.git', :branch => ‘feature/swift-3’
 
   target 'MDBSocialsTests' do
     inherit! :search_paths
