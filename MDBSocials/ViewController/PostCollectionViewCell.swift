@@ -55,4 +55,12 @@ class PostCollectionViewCell: UICollectionViewCell {
         interested.font = UIFont(name: "HelveticaNeue-Italic", size: 14)
         contentView.addSubview(interested)
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        postName.isHidden = true
+        poster.isHidden = true
+        interested.isHidden = true
+        postImage.isHidden = true
+    }
 }

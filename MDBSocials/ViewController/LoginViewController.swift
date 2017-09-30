@@ -20,10 +20,6 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // creating temp post
-        let ref = Database.database().reference().child("Posts").child(("test post0"))
-        ref.setValue(["name": "roo party", "imageUrl": "", "description": "time to moo!", "date": "4/21/17", "interestedNumber": 0, "poster": "abc"])
-        
         // replace this with a picture
         view.backgroundColor = UIColor(hue: 0.5361, saturation: 0.84, brightness: 0.87, alpha: 1.0)
         
@@ -34,10 +30,6 @@ class LoginViewController: UIViewController {
         if Auth.auth().currentUser != nil {
             userLoggedIn()
         }
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
     }
     
     // Transition Functions

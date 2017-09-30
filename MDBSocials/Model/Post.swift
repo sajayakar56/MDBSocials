@@ -16,6 +16,9 @@ class Post {
     var imageUrl: String
     var description: String
     var interestedNumber: Int
+    var eventTime: Date
+    var dateCreated: Date
+    var interestedUsers: [String]
 
     init(postDict: [String:Any]) {
         self.interestedNumber = postDict["interestedNumber"] as! Int
@@ -23,14 +26,9 @@ class Post {
         self.eventName = postDict["name"] as! String
         self.description = postDict["description"] as! String
         self.posterName = postDict["poster"] as! String
-    }
-    
-    init(user: String, name: String, imageUrl: String, interestedNumber: Int) {
-        self.interestedNumber = interestedNumber
-        self.imageUrl = imageUrl
-        eventName = name
-        posterName = user
-        description = ""
+        self.interestedUsers = postDict["interestedUsers"] as! [String]
+        self.eventTime = DateConverter.stringToDate(s: postDict["date"] as! String)
+        self.dateCreated = DateConverter.stringToDate(s: postDict["dateCreated"] as! String)
     }
     
     func getImage(withBlock: @escaping (UIImage) -> Void) {

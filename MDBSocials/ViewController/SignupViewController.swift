@@ -24,10 +24,7 @@ class SignupViewController: UIViewController {
         setupTextFields()
         setupButtons()
     }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
+
     
     // Setup Functions
     func setupTitle() {
@@ -52,7 +49,7 @@ class SignupViewController: UIViewController {
         nameTextField.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
         view.addSubview(nameTextField)
         
-        passwordTextField = UITextField(frame: rRect(rx: 27, ry: 276, rw: 210, rh: 34))
+        passwordTextField = UITextField(frame: rRect(rx: 27, ry: 204, rw: 210, rh: 34))
         passwordTextField.layer.backgroundColor = UIColor.lightGray.cgColor
         passwordTextField.placeholder = "Password"
         passwordTextField.adjustsFontSizeToFitWidth = true
@@ -65,7 +62,7 @@ class SignupViewController: UIViewController {
         passwordTextField.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
         view.addSubview(passwordTextField)
         
-        emailTextField = UITextField(frame: rRect(rx: 27, ry: 348, rw: 210, rh: 34))
+        emailTextField = UITextField(frame: rRect(rx: 27, ry: 276, rw: 210, rh: 34))
         emailTextField.layer.backgroundColor = UIColor.lightGray.cgColor
         emailTextField.placeholder = "Email"
         emailTextField.adjustsFontSizeToFitWidth = true
@@ -85,7 +82,7 @@ class SignupViewController: UIViewController {
         backButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
         view.addSubview(backButton)
         
-        signupButton = UIButton(frame: rRect(rx: 17, ry: 507, rw: 336, rh: 54))
+        signupButton = UIButton(frame: rRect(rx: 17, ry: 360, rw: 336, rh: 54))
         signupButton.setTitle("Register", for: .normal)
         signupButton.addTarget(self, action: #selector(signupButtonClicked), for: .touchUpInside)
         signupButton.backgroundColor = UIColor.lightGray

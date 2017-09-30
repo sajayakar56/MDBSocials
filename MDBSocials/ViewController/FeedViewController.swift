@@ -15,20 +15,25 @@ class FeedViewController: UIViewController, UINavigationControllerDelegate {
     // Collection view for posts
     var collectionView: UICollectionView!
     var selectedPost: Post?
+    let dateFormatter = DateFormatter()
+    var refHandle: DatabaseReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         s = State()
-        
-        // add a post for now manually
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
         
         getCurrentUser {
-            self.getPosts() {
                 self.setupNavBar()
-                self.setupButtons()
                 self.setupCollectionView()
-            }
+                self.refHandle = Database.database().reference()
+                self.refHandle.observe(DataEventType.value, with: { (snapshot) in
+                    self.refreshPosts(d: snapshot) {
+                        self.view.addSubview(self.collectionView)
+                    }
+                })
+                self.collectionView.reloadData()
         }
     }
     
@@ -37,7 +42,11 @@ class FeedViewController: UIViewController, UINavigationControllerDelegate {
             let detailVC = segue.destination as! DetailViewController
             if let post = selectedPost {
                 detailVC.post = post
+                detailVC.s = self.s
             }
+        } else if segue.identifier == "feedToNew" {
+            let newVC = segue.destination as! NewSocialViewController
+            newVC.s = self.s
         }
     }
     
@@ -50,20 +59,26 @@ class FeedViewController: UIViewController, UINavigationControllerDelegate {
         })
     }
     
-    // can update this idea to have a listener that updates
-    func getPosts(withBlock: @escaping () -> ()) {
+    func refreshPosts(d: DataSnapshot, withBlock: @escaping () -> ()) {
+        s.posts = []
+        self.collectionView.reloadData()
+        self.collectionView.removeFromSuperview()
         let ref = Database.database().reference()
         ref.child("Posts").observeSingleEvent(of: .value, with: { (snapshot) in
             let value = snapshot.value as? NSDictionary
             // need to create the post values and add them to state
-            let posts = value?.allValues
-            for post in posts! {
-                let p = Post(postDict: post as! [String : Any])
-                self.s.posts.append(p)
-                self.collectionView.reloadData()
+            if let v = value {
+                for (key, val) in v {
+                    let key = key as! String
+                    let val = val as! [String: Any]
+                    let post = Post(postDict: val)
+                    self.s.posts.append(post)
+                    self.collectionView.reloadData()
+                    self.s.sortPosts()
+                    withBlock()
+                }
             }
         })
-        withBlock()
     }
     
     // Setup Functions
@@ -75,9 +90,6 @@ class FeedViewController: UIViewController, UINavigationControllerDelegate {
         
         navigationItem.leftBarButtonItem = logoutButton
         navigationItem.rightBarButtonItem = postButton
-    }
-    
-    func setupButtons() {
     }
     
     func setupCollectionView() {
@@ -105,6 +117,10 @@ class FeedViewController: UIViewController, UINavigationControllerDelegate {
     
     @objc
     func postButtonPressed() {
+        print("going to new")
+        let newVC = NewSocialViewController()
+//        newVC.s = self.s
+//        self.navigationController?.pushViewController(newVC, animated: true)
         performSegue(withIdentifier: "feedToNew", sender: self)
     }
 }
@@ -134,6 +150,7 @@ extension FeedViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let post = s.posts[indexPath.row]
         cell.postName.text = post.eventName
         cell.poster.text = post.posterName
+        cell.interested.text = String(post.interestedNumber) + " interested"
         post.getImage(withBlock: { img in
             cell.postImage.image = img
         })

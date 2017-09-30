@@ -13,4 +13,10 @@ class State {
     init() {
         posts = []
     }
+    
+    func sortPosts() {
+        posts.sort { (obj1, obj2) -> Bool in
+            return obj1.dateCreated > obj2.dateCreated
+        }
+    }
 }
