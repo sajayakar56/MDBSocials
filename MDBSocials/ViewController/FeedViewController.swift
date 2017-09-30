@@ -117,10 +117,6 @@ class FeedViewController: UIViewController, UINavigationControllerDelegate {
     
     @objc
     func postButtonPressed() {
-        print("going to new")
-        let newVC = NewSocialViewController()
-//        newVC.s = self.s
-//        self.navigationController?.pushViewController(newVC, animated: true)
         performSegue(withIdentifier: "feedToNew", sender: self)
     }
 }

@@ -70,7 +70,7 @@ class NewSocialViewController: UIViewController {
         view.addSubview(postButton)
         
         imageButton = UIButton(frame: rRect(rx: 42, ry: 590, rw: 156, rh: 51))
-//        imageButton.addTarget(self, action: #selector(loadImageButtonTapped), for: .touchUpInside)
+        imageButton.addTarget(self, action: #selector(loadImageButtonTapped), for: .touchUpInside)
         imageButton.backgroundColor = UIColor(red: 1.00, green: 0.31, blue: 0.31, alpha: 1.0)
         imageButton.setTitleColor(UIColor.white, for: .normal)
         imageButton.setTitle("Choose Image", for: .normal)
@@ -83,20 +83,45 @@ class NewSocialViewController: UIViewController {
     func postButtonPressed() {
         // add check for if the fields are complete
         let emptyStringList: [String] = ["nil"]
-        let post: Post = Post(postDict: ["interestedNumber": 0,
-                              "imageUrl": "",
-                              "name": postName.text,
-                              "description": postDescription.text,
-                              "poster": s.currentUser!.name,
-                              "date": datePicker.date.description,
+        DB.storeImage(img: postImage.image!) { url in
+            print(url)
+            let post: Post = Post(postDict: ["interestedNumber": 0,
+                              "imageUrl": url,
+                              "name": self.postName.text,
+                              "description": self.postDescription.text,
+                              "poster": self.s.currentUser!.name,
+                              "date": self.datePicker.date.description,
                               "dateCreated": Date().description,
                               "interestedUsers": emptyStringList])
-        DB.createPost(post: post, date: Date())
-        navigationController!.popViewController(animated: true)
+            DB.createPost(post: post, date: Date())
+            self.navigationController!.popViewController(animated: true)
+        }
+    }
+    
+    @objc
+    func loadImageButtonTapped() {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        
+        let actionSheet = UIAlertController(title: "Photo Source", message: "Choose a source", preferredStyle: .actionSheet)
+        
+        actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (action: UIAlertAction) in
+            imagePickerController.sourceType = .camera
+            self.present(imagePickerController, animated: true, completion: nil)
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { (action: UIAlertAction) in
+            imagePickerController.sourceType = .photoLibrary
+            self.present(imagePickerController, animated: true, completion: nil)
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(actionSheet, animated: true, completion: nil)
     }
 }
 
-extension NewSocialViewController: UITextViewDelegate {
+extension NewSocialViewController: UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     // Removes the placeholder text as well as changes the color
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == UIColor.lightGray {
@@ -120,5 +145,16 @@ extension NewSocialViewController: UITextViewDelegate {
         let linesAfterChange = existingLines.count + newLines.count - 1
         
         return linesAfterChange <= textView.textContainer.maximumNumberOfLines
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        self.postImage.image = image
+        
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
     }
 }

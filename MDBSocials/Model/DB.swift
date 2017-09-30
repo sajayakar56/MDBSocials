@@ -37,4 +37,16 @@ class DB {
             }
         })
     }
+    
+    class func storeImage(img: UIImage, withBlock: @escaping (String) -> ()) {
+        let storage = Storage.storage().reference().child("postpics")
+        let metadata = StorageMetadata()
+        let imgData = UIImageJPEGRepresentation(img, 0.9)
+        var url = ""
+        metadata.contentType = "image/jpeg"
+        storage.putData(imgData!, metadata: metadata).observe(.success) { (snapshot) in
+            url = (snapshot.metadata?.downloadURL()?.absoluteString)!
+            withBlock(url)
+        }
+    }
 }
