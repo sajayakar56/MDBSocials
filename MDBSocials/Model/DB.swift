@@ -49,4 +49,31 @@ class DB {
             withBlock(url)
         }
     }
+    
+    class func getCurrentUser(withBlock: @escaping (User) -> ()) {
+        let ref = Database.database().reference()
+        ref.child("Users").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
+            let user = User(id: snapshot.key, userDict: snapshot.value as! [String: Any]?)
+            withBlock(user)
+        })
+    }
+    
+    class func refreshPosts(state: State, d: DataSnapshot, withBlock: @escaping () -> ()) {
+        state.posts = []
+        let ref = Database.database().reference()
+        ref.child("Posts").observeSingleEvent(of: .value, with: { (snapshot) in
+            let value = snapshot.value as? NSDictionary
+            // need to create the post values and add them to state
+            if let v = value {
+                for (key, val) in v {
+                    let key = key as! String
+                    let val = val as! [String: Any]
+                    let post = Post(postDict: val)
+                    state.posts.append(post)
+                    state.sortPosts()
+                    withBlock()
+                }
+            }
+        })
+    }
 }

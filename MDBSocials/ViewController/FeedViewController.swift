@@ -11,7 +11,7 @@ import Firebase
 
 class FeedViewController: UIViewController, UINavigationControllerDelegate {
     var s: State!
-    var auth = Auth.auth()
+    let auth = Auth.auth()
     // Collection view for posts
     var collectionView: UICollectionView!
     var selectedPost: Post?
@@ -24,16 +24,16 @@ class FeedViewController: UIViewController, UINavigationControllerDelegate {
         s = State()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
         
-        getCurrentUser {
-                self.setupNavBar()
-                self.setupCollectionView()
-                self.refHandle = Database.database().reference()
-                self.refHandle.observe(DataEventType.value, with: { (snapshot) in
-                    self.refreshPosts(d: snapshot) {
-                        self.view.addSubview(self.collectionView)
-                    }
-                })
-                self.collectionView.reloadData()
+        DB.getCurrentUser { (user) in
+            self.s.currentUser = user
+            self.setupNavBar()
+            self.setupCollectionView()
+            self.refHandle = Database.database().reference()
+            self.refHandle.observe(DataEventType.value, with: { (snapshot) in
+                DB.refreshPosts(state: self.self.s, d: snapshot) {
+                    self.collectionView.reloadData()
+                }
+            })
         }
     }
     
@@ -48,37 +48,6 @@ class FeedViewController: UIViewController, UINavigationControllerDelegate {
             let newVC = segue.destination as! NewSocialViewController
             newVC.s = self.s
         }
-    }
-    
-    func getCurrentUser(withBlock: @escaping () -> ()) {
-        let ref = Database.database().reference()
-        ref.child("Users").child((self.auth.currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
-            let user = User(id: snapshot.key, userDict: snapshot.value as! [String: Any]?)
-            self.s.currentUser = user
-            withBlock()
-        })
-    }
-    
-    func refreshPosts(d: DataSnapshot, withBlock: @escaping () -> ()) {
-        s.posts = []
-        self.collectionView.reloadData()
-        self.collectionView.removeFromSuperview()
-        let ref = Database.database().reference()
-        ref.child("Posts").observeSingleEvent(of: .value, with: { (snapshot) in
-            let value = snapshot.value as? NSDictionary
-            // need to create the post values and add them to state
-            if let v = value {
-                for (key, val) in v {
-                    let key = key as! String
-                    let val = val as! [String: Any]
-                    let post = Post(postDict: val)
-                    self.s.posts.append(post)
-                    self.collectionView.reloadData()
-                    self.s.sortPosts()
-                    withBlock()
-                }
-            }
-        })
     }
     
     // Setup Functions
