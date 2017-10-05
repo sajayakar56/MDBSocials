@@ -8,7 +8,7 @@
 
 class State {
     var currentUser: User?
-    var posts: [Post]
+    var posts: [Social]
     
     init() {
         posts = []
