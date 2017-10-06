@@ -14,20 +14,22 @@ class DB {
         let ref = Database.database().reference()
         ref.child("Users").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
             let user = User(id: snapshot.key, userDict: snapshot.value as! [String: Any]?)
-            withBlock(user)
+            DispatchQueue.main.async {
+                withBlock(user)
+            } 
         })
     }
     
     class func createPost(post: Social, date: Date) {
         let ref = Database.database().reference().child("Posts").child((date.description))
         let dict: [String: Any] = ["name": post.eventName,
-                    "imageUrl": post.imageUrl,
-                    "interestedNumber": post.interestedNumber,
-                    "description": post.description,
-                    "poster": post.posterName,
-                    "date": post.eventTime.description,
-                    "dateCreated": post.dateCreated.description,
-                    "interestedUsers": post.interestedUsers]
+                                   "imageUrl": post.imageUrl,
+                                   "interestedNumber": post.interestedNumber,
+                                   "description": post.description,
+                                   "poster": post.posterName,
+                                   "date": post.eventTime.description,
+                                   "dateCreated": post.dateCreated.description,
+                                   "interestedUsers": post.interestedUsers]
         ref.setValue(dict)
     }
     
@@ -43,7 +45,9 @@ class DB {
                     let val = val as! [String: Any]
                     let post = Social(postDict: val)
                     posts.append(post)
-                    withBlock(posts)
+                    DispatchQueue.main.async {
+                        withBlock(posts)
+                    }
                 }
             }
         })

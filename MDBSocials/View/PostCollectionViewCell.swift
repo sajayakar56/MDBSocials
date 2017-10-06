@@ -25,6 +25,8 @@ class PostCollectionViewCell: UICollectionViewCell {
         postImage.contentMode = .scaleAspectFit
         postImage.clipsToBounds = true
         postImage.image = UIImage(named: "placeholder")
+        postImage.layer.borderColor = UIColor.black.cgColor
+        postImage.layer.borderWidth = 1.5
         contentView.addSubview(postImage)
         
         // labels!

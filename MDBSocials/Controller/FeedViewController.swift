@@ -70,7 +70,7 @@ class FeedViewController: UIViewController, UINavigationControllerDelegate {
         collectionView.register(PostCollectionViewCell.self, forCellWithReuseIdentifier: "collectionViewCell")
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = UIColor.lightGray
+        collectionView.backgroundColor = UIColor.white
         view.addSubview(collectionView)
     }
     
@@ -92,7 +92,6 @@ class FeedViewController: UIViewController, UINavigationControllerDelegate {
 }
 
 extension FeedViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    // figure out what this does
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 0, bottom: 30, right: 0)
     }
@@ -110,13 +109,13 @@ extension FeedViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         cell.awakeFromNib()
         
-        // add image
-        
-        // do other stuff
         let post = s.posts[indexPath.row]
         cell.postName.text = post.eventName
         cell.poster.text = post.posterName
         cell.interested.text = String(post.interestedNumber) + " interested"
+        cell.layer.cornerRadius = 7
+        cell.layer.borderWidth = 1.0
+        cell.layer.borderColor = UIColor.black.cgColor
         post.getImage(withBlock: { img in
             cell.postImage.image = img
         })
@@ -132,5 +131,5 @@ extension FeedViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 0.95 * view.frame.width, height: 0.282 * view.frame.height)
-    }        
+    }
 }

@@ -37,7 +37,8 @@ class Social {
         let cache = Shared.imageCache
         if let u = url {
             cache.fetch(URL: u).onSuccess({ img in
-                withBlock(img)})
+                withBlock(img)
+            })
         }
     }
 }

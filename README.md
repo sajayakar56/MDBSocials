@@ -1,6 +1,8 @@
 # Mini-Project 3: MDB Socials
 An iOS app that allows members to "post and RSVP to social events."
 
+<img src=screenshot.jpg width=375 height=667 />
+
 # Features
 - Firebase Authentification using Email
 - Firebase registration

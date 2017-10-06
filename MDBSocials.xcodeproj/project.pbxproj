@@ -19,6 +19,8 @@
 		2D3BD9011F78A6EF00904108 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3BD9001F78A6EF00904108 /* FeedViewController.swift */; };
 		2D3BD9031F78A6F700904108 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3BD9021F78A6F700904108 /* DetailViewController.swift */; };
 		2D4812281F7F655200B40B42 /* NewSocialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4812271F7F655100B40B42 /* NewSocialViewController.swift */; };
+		2D6A90E61F86ED6B005FDBAE /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6A90E51F86ED6B005FDBAE /* SplashViewController.swift */; };
+		2D6A90E81F86FD1F005FDBAE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6A90E71F86FD1F005FDBAE /* Constants.swift */; };
 		2D81601C1F7C6ED6006FFD08 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D81601B1F7C6ED6006FFD08 /* User.swift */; };
 		2D81601E1F7C6F71006FFD08 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D81601D1F7C6F71006FFD08 /* State.swift */; };
 		2D8160201F7C706E006FFD08 /* Social.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D81601F1F7C706E006FFD08 /* Social.swift */; };
@@ -70,6 +72,8 @@
 		2D3BD9001F78A6EF00904108 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		2D3BD9021F78A6F700904108 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		2D4812271F7F655100B40B42 /* NewSocialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSocialViewController.swift; sourceTree = "<group>"; };
+		2D6A90E51F86ED6B005FDBAE /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		2D6A90E71F86FD1F005FDBAE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2D81601B1F7C6ED6006FFD08 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		2D81601D1F7C6F71006FFD08 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		2D81601F1F7C706E006FFD08 /* Social.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Social.swift; sourceTree = "<group>"; };
@@ -173,6 +177,7 @@
 		2D3BD8FA1F78A68000904108 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				2D6A90E51F86ED6B005FDBAE /* SplashViewController.swift */,
 				2D3BD8FC1F78A6D600904108 /* LoginViewController.swift */,
 				2D3BD8FE1F78A6E700904108 /* SignupViewController.swift */,
 				2D3BD9001F78A6EF00904108 /* FeedViewController.swift */,
@@ -206,6 +211,7 @@
 				2D91A43F1F7EEE6E008AEC71 /* DB.swift */,
 				2DBC47111F7F474200EBB199 /* DateConverter.swift */,
 				2DC895311F7B72E100977039 /* VCExtensions.swift */,
+				2D6A90E71F86FD1F005FDBAE /* Constants.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -540,6 +546,8 @@
 				2D3BD8FD1F78A6D600904108 /* LoginViewController.swift in Sources */,
 				2DC895321F7B72E100977039 /* VCExtensions.swift in Sources */,
 				2D4812281F7F655200B40B42 /* NewSocialViewController.swift in Sources */,
+				2D6A90E81F86FD1F005FDBAE /* Constants.swift in Sources */,
+				2D6A90E61F86ED6B005FDBAE /* SplashViewController.swift in Sources */,
 				2D81601C1F7C6ED6006FFD08 /* User.swift in Sources */,
 				2D81601E1F7C6F71006FFD08 /* State.swift in Sources */,
 				2D91A4401F7EEE6E008AEC71 /* DB.swift in Sources */,

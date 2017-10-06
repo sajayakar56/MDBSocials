@@ -32,6 +32,8 @@ class NewSocialViewController: UIViewController {
         postImage.image = UIImage(named: "placeholder")
         postImage.contentMode = .scaleAspectFit
         postImage.clipsToBounds = true
+        postImage.layer.borderColor = UIColor.black.cgColor
+        postImage.layer.borderWidth = 1.5
         view.addSubview(postImage)
     }
 
@@ -63,7 +65,7 @@ class NewSocialViewController: UIViewController {
     func setupButtons() {
         postButton = UIButton(frame: rRect(rx: 225, ry: 589, rw: 120, rh: 51))
         postButton.addTarget(self, action: #selector(postButtonPressed), for: .touchUpInside)
-        postButton.backgroundColor = UIColor(red: 0.31, green: 1.00, blue: 0.88, alpha: 1.0)
+        postButton.backgroundColor = Constants.mutedBlue
         postButton.setTitle("POST", for: .normal)
         postButton.setTitleColor(UIColor.white, for: .normal)
         postButton.layer.cornerRadius = 26

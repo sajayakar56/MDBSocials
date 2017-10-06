@@ -10,82 +10,95 @@ import UIKit
 import Firebase
 
 class SignupViewController: UIViewController {
+    var backgroundImage: UIImageView!
     var passwordTextField: UITextField!
     var nameTextField: UITextField!
     var emailTextField: UITextField!
-    var screenTitle: UILabel!
     var backButton: UIButton!
     var signupButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupTitle()
+        setupImages()
         setupTextFields()
         setupButtons()
     }
 
     
     // Setup Functions
-    func setupTitle() {
-        screenTitle = UILabel(frame: rRect(rx: 202, ry: 30, rw: 151, rh: 55))
-        screenTitle.text = "Signup"
-        screenTitle.font = UIFont.systemFont(ofSize: 36, weight: UIFont.Weight(rawValue: 3))
-        screenTitle.adjustsFontSizeToFitWidth = true
-        screenTitle.textAlignment = .center
-        view.addSubview(screenTitle)
+    func setupImages() {
+        backgroundImage = UIImageView(frame: view.frame)
+        backgroundImage.image = UIImage(named: "BlurredSplash")
+        backgroundImage.center = CGPoint(x: view.frame.width / 2, y: view.frame.height / 2)
+        backgroundImage.contentMode = .scaleAspectFill
+        view.addSubview(backgroundImage)
     }
     
     func setupTextFields() {
-        nameTextField = UITextField(frame: rRect(rx: 27, ry: 132, rw: 210, rh: 34))
-        nameTextField.layer.backgroundColor = UIColor.lightGray.cgColor
-        nameTextField.placeholder = "Name"
+        nameTextField = UITextField(frame: rRect(rx: 26, ry: 125, rw: 323, rh: 60))
         nameTextField.adjustsFontSizeToFitWidth = true
         nameTextField.layoutIfNeeded()
-        nameTextField.layer.cornerRadius = 2
-        nameTextField.textColor = UIColor.black
+        nameTextField.layer.cornerRadius = 30
+        nameTextField.textColor = UIColor.white
         nameTextField.autocorrectionType = .no
+        nameTextField.autocapitalizationType = .none
         nameTextField.spellCheckingType = .no
         nameTextField.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
+        nameTextField.backgroundColor = Constants.mutedBlue
+        nameTextField.layer.opacity = 0.4
+        nameTextField.attributedPlaceholder = NSAttributedString(string: "Name",
+                                                                  attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
         view.addSubview(nameTextField)
         
-        passwordTextField = UITextField(frame: rRect(rx: 27, ry: 204, rw: 210, rh: 34))
-        passwordTextField.layer.backgroundColor = UIColor.lightGray.cgColor
-        passwordTextField.placeholder = "Password"
-        passwordTextField.adjustsFontSizeToFitWidth = true
-        passwordTextField.layoutIfNeeded()
-        passwordTextField.layer.cornerRadius = 2
-        passwordTextField.textColor = UIColor.black
-        passwordTextField.autocorrectionType = .no
-        passwordTextField.isSecureTextEntry = true
-        passwordTextField.spellCheckingType = .no
-        passwordTextField.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
-        view.addSubview(passwordTextField)
-        
-        emailTextField = UITextField(frame: rRect(rx: 27, ry: 276, rw: 210, rh: 34))
-        emailTextField.layer.backgroundColor = UIColor.lightGray.cgColor
-        emailTextField.placeholder = "Email"
+        emailTextField = UITextField(frame: rRect(rx: 26, ry: 213, rw: 323, rh: 60))
         emailTextField.adjustsFontSizeToFitWidth = true
         emailTextField.layoutIfNeeded()
-        emailTextField.layer.cornerRadius = 2
-        emailTextField.textColor = UIColor.black
+        emailTextField.layer.cornerRadius = 30
+        emailTextField.textColor = UIColor.white
         emailTextField.autocorrectionType = .no
-        emailTextField.spellCheckingType = .no
         emailTextField.autocapitalizationType = .none
+        emailTextField.spellCheckingType = .no
         emailTextField.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
+        emailTextField.backgroundColor = Constants.mutedBlue
+        emailTextField.keyboardType = UIKeyboardType.emailAddress
+        emailTextField.layer.opacity = 0.4
+        emailTextField.attributedPlaceholder = NSAttributedString(string: "Email",
+                                                                  attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
         view.addSubview(emailTextField)
+        
+        passwordTextField = UITextField(frame: rRect(rx: 26, ry: 301, rw: 323, rh: 60))
+        passwordTextField.adjustsFontSizeToFitWidth = true
+        passwordTextField.layoutIfNeeded()
+        passwordTextField.layer.cornerRadius = 30
+        passwordTextField.textColor = UIColor.white
+        passwordTextField.autocorrectionType = .no
+        passwordTextField.autocapitalizationType = .none
+        passwordTextField.spellCheckingType = .no
+        passwordTextField.isSecureTextEntry = true
+        passwordTextField.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
+        passwordTextField.backgroundColor = Constants.mutedBlue
+        passwordTextField.keyboardType = UIKeyboardType.emailAddress
+        passwordTextField.layer.opacity = 0.4
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: "Password",
+                                                                  attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+        view.addSubview(passwordTextField)
     }
     
     func setupButtons() {
-        backButton = UIButton(frame: rRect(rx: 27, ry: 38, rw: 40, rh: 40))
-        backButton.setImage(UIImage(named: "backButton"), for: .normal)
+        backButton = UIButton(frame: rRect(rx: 11, ry: 30, rw: 68, rh: 68))
+        backButton.setImage(UIImage(named: "homeButton"), for: .normal)
         backButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
         view.addSubview(backButton)
         
-        signupButton = UIButton(frame: rRect(rx: 17, ry: 360, rw: 336, rh: 54))
+        signupButton = UIButton(frame: rRect(rx: 26, ry: 405, rw: 323, rh: 60))
+        signupButton.layoutIfNeeded()
         signupButton.setTitle("Register", for: .normal)
+        signupButton.setTitleColor(UIColor.white, for: .normal)
+        signupButton.layer.cornerRadius = 30
+        signupButton.layer.masksToBounds = true
         signupButton.addTarget(self, action: #selector(signupButtonClicked), for: .touchUpInside)
-        signupButton.backgroundColor = UIColor.lightGray
+        signupButton.backgroundColor = UIColor(red: 0.00, green: 0.47, blue: 0.81, alpha: 1.0) // #0077CE
         view.addSubview(signupButton)
     }
     
