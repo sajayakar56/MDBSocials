@@ -1,4 +1,4 @@
-# Mini-Project 3: MDB Socials
+# Mini-Project 3-4: MDB Socials
 An iOS app that allows members to "post and RSVP to social events."
 
 <img src=screenshot.jpg width=375 height=667 />
